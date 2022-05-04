@@ -6,22 +6,22 @@ const CreateCollege = async function (req, res) {
   try {
     let data = req.body;
     if(!data){
-      return res.status(400).send({status: false, msg:" college creation not allow"})
+      return res.status(400).send({status: false, message:" college creation not allow"})
     }
     if (!data.name) {
       return res
         .status(400)
-        .send({ status: false, msg: "Enter a valid Name" });
+        .send({ status: false, message: "Enter a Name" });
     }
     if (Object.keys(data.name).length == 0 || data.name.length == 0) {
       return res
         .status(400)
-        .send({ status: false, data: "Enter a valid Name" });
+        .send({ status: false, message: "Enter a valid Name" });
     }                                       //const obj={name:sone,age:24}  //Object.keys(obj)=>[name,age]
     if (!data.fullName) {
       return res
         .status(400)
-        .send({ status: false, msg: "Enter a full collegeName" }); //fullName: []
+        .send({ status: false, message: "Enter a full collegeName" }); //fullName: []
     }
     if(Object.keys(data.fullName).length == 0 || data.fullName.length == 0){
       return res.status(400).send({status:false, msg:"Enter a valid full collegeName"})
@@ -29,7 +29,7 @@ const CreateCollege = async function (req, res) {
     if (!data.logoLink) {
       return res
         .status(400)
-        .send({ status: false, msg: "plz giving the logoLink" });
+        .send({ status: false, message: "plz giving the logoLink" });
     }
     if (Object.keys(data.logoLink).length == 0 || data.logoLink.lengthb == 0){
       return res.status(400).send({status:false, data: " Plz Enter valid logoLink"})
@@ -54,7 +54,7 @@ const CollegeDetails = async function (req, res) {
     if (!details) {
       return res
         .status(400)
-        .send({ status:false, error: "Data  is not present " });
+        .send({ status:false, message: "Details  is not present " });
     }
     const data2 = await InternModel.find({
       collegeId: details._id,
@@ -72,9 +72,9 @@ const CollegeDetails = async function (req, res) {
       interests: data2,
     };
 
-    return res.status(200).send({status: true, Data: getData });
+    return res.status(200).send({status: true, data: getData });
   } catch (err) {
-    return res.status(500).send({ ERROR: err.message });
+    return res.status(500).send({ message: err.message });
   }
 }
 
