@@ -4,10 +4,13 @@ const collegeModel = require("../Model/collegeModel");
 const CreateCollege = async function (req, res) {
   try {
     let data = req.body;
+    if(!data){
+      return res.status(400).send({status: false, msg:" college creation not allow"})
+    }
     if (!data.name) {
       return res
         .status(400)
-        .send({ status: false, msg: "college creation not all" });
+        .send({ status: false, msg: "Enter a valid Name" });
     }
     if (Object.keys(data.name).length == 0 || data.name.length == 0) {
       return res
@@ -39,4 +42,4 @@ const CreateCollege = async function (req, res) {
   }
 };
 
-module .exports.CreateCollege = CreateCollege
+module.exports.CreateCollege = CreateCollege

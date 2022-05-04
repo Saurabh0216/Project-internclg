@@ -22,17 +22,17 @@ const internSchema = new mongoose.Schema(
       },
     },
     mobile: {
-      type: String,
+      type: Number,
       trim: true,
-      number: true,
       unique: true,
-      required: [true, "mobile number is rrequirred"],
+      required: [true, "mobile number is required"],
       validate: {
-        validate: function (m) {
-          return /^[1-9]{1}[0-9]{9}$/.test(m);
+        validator:function(v) {
+          return /^(?:(?:\+|0{0,2})91(\s*|[\-])?|[0]?)?([6789]\d{2}([ -]?)\d{3}([ -]?)\d{4})$/.test(v)
         },
-        massage: "please enter a valid mobile",
-      },
+        message:"Please enter a valid mobile number"
+      }
+      
     },
     collegeId: {
       type: ObjectId,
@@ -40,7 +40,7 @@ const internSchema = new mongoose.Schema(
       required: [true, "please enter a collegeId "],
     },
     isDeleted: {
-      type: boolean,
+      type: Boolean,
       default: false,
     },
   },
