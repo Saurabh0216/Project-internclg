@@ -1,6 +1,7 @@
 const collegeModel = require("../Model/collegeModel");
-//const internModel = require("../Model/InternModel");
+const InternModel = require("../Model/InternModel");
 
+////POST /functionup/colleges
 const CreateCollege = async function (req, res) {
   try {
     let data = req.body;
@@ -16,13 +17,13 @@ const CreateCollege = async function (req, res) {
       return res
         .status(400)
         .send({ status: false, data: "Enter a valid Name" });
-    }
+    }                                       //const obj={name:sone,age:24}  //Object.keys(obj)=>[name,age]
     if (!data.fullName) {
       return res
         .status(400)
-        .send({ status: false, msg: "Enter a full collegeName" });
+        .send({ status: false, msg: "Enter a full collegeName" }); //fullName: []
     }
-    if(Object.keys(data.fullName).length == 0 || data.fullName == 0){
+    if(Object.keys(data.fullName).length == 0 || data.fullName.length == 0){
       return res.status(400).send({status:false, msg:"Enter a valid full collegeName"})
     }
     if (!data.logoLink) {
@@ -30,7 +31,7 @@ const CreateCollege = async function (req, res) {
         .status(400)
         .send({ status: false, msg: "plz giving the logoLink" });
     }
-    if (Object.keys(data.fullName).length == 0 || data.fullName == 0){
+    if (Object.keys(data.logoLink).length == 0 || data.logoLink.lengthb == 0){
       return res.status(400).send({status:false, data: " Plz Enter valid logoLink"})
     }
 
@@ -42,4 +43,40 @@ const CreateCollege = async function (req, res) {
   }
 };
 
+//GET /functionup/collegeDetails
+const CollegeDetails = async function (req, res) {
+  try {
+    const data = req.query.collegeName;
+    const details = await collegeModel.findOne({
+      name: data,
+      isDeleted: false,
+    });
+    if (!details) {
+      return res
+        .status(400)
+        .send({ status:false, error: "Data  is not present " });
+    }
+    const data2 = await InternModel.find({
+      collegeId: details._id,
+      isDeleted: false,
+    }).select({ name: 1, email: 1, mobile: 1 });
+    if (!data2) {
+      return res
+        .status(400)
+        .send({ status:false, massege: "Data not present" });
+    }
+    const getData = {
+      name: details.name,
+      fullName: details.fullName,
+      logoLink: details.logoLink,
+      interests: data2,
+    };
+
+    return res.status(200).send({status: true, Data: getData });
+  } catch (err) {
+    return res.status(500).send({ ERROR: err.message });
+  }
+}
+
+module.exports.CollegeDetails = CollegeDetails
 module.exports.CreateCollege = CreateCollege

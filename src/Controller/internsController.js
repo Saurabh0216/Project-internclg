@@ -1,6 +1,8 @@
 const InternModel = require("../Model/InternModel");
 const collegeModel = require("../Model/collegeModel");
 
+
+////POST /functionup/interns
 const CreateInterns = async function (req, res) {
   try {
     let data = req.body;
@@ -43,10 +45,8 @@ const CreateInterns = async function (req, res) {
         .status(400)
         .send({ status: false, data: "enter a valid collegeId" });
     }
-    console.log(college_id);
     let collegeDetail = await collegeModel.find({_id:data.collegeId});
     //console.log(collegeDetail);
-    console.log(data)
     if (!collegeDetail) {
       return res
         .status(404)
