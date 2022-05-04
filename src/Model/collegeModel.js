@@ -1,4 +1,3 @@
-const { timeStamp } = require('console')
 const mongoose = require('mongoose')
 
 const collegeSchema = new mongoose.Schema(
@@ -16,7 +15,7 @@ const collegeSchema = new mongoose.Schema(
         },
         logoLink:{
             type:String,
-            required:[true, 'logolink is required']
+            required:[true, 'logoLink is required']
 
         },
         isDeleted:{
