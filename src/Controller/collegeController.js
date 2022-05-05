@@ -5,48 +5,59 @@ const InternModel = require("../Model/InternModel");
 const CreateCollege = async function (req, res) {
   try {
     let data = req.body;
-    if(!data){
-      return res.status(400).send({status: false, message:" college creation not allow"})
+    console.log(data)
+    if (!data) {
+      return res
+        .status(400)
+        .send({ status: false, message: " college creation not allow" });
     }
-    let checknameExist = await collegeModel.find({ name: data.name });
+    let checknameExist = await collegeModel.find({name:data.name})
+    console.log(checknameExist)
     if (checknameExist.length != 0) {
       return res
         .status(400)
         .send({ status: false, data: "name already exist" });
     }
     if (!data.name) {
-      return res
-        .status(400)
-        .send({ status: false, message: "Enter a Name" });
+      return res.status(400).send({ status: false, message: "Enter a Name" });
     }
     if (Object.keys(data.name).length == 0 || data.name.length == 0) {
       return res
         .status(400)
         .send({ status: false, message: "Enter a valid Name" });
-    }                                       //const obj={name:sone,age:24}  //Object.keys(obj)=>[name,age]
+    }
+    if (!/^([a-zA-Z])/.test(data.name)) {
+      return res.status(400).send ({ status: false, massege: "plz enter name" })
+    }
     if (!data.fullName) {
       return res
         .status(400)
         .send({ status: false, message: "Enter a full collegeName" }); //fullName: []
     }
-    if(Object.keys(data.fullName).length == 0 || data.fullName.length == 0){
-      return res.status(400).send({status:false, msg:"Enter a valid full collegeName"})
+    if (Object.keys(data.fullName).length == 0 || data.fullName.length == 0) {
+      return res
+        .status(400)
+        .send({ status: false, msg: "Enter a valid full collegeName" });
     }
     if (!data.logoLink) {
       return res
         .status(400)
         .send({ status: false, message: "plz giving the logoLink" });
     }
-    if (!/[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%.\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%\+.~#?&\/\/=]*)/.test(data.logoLink)
-    ) { return res
-      .status(400)
-      .send({ status: false, message: "logoLink is required" });
-  }
+    if (
+      !/[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%.\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%\+.~#?&\/\/=]*)/.test(
+        data.logoLink
+      )
+    ) {
+      return res
+        .status(400)
+        .send({ status: false, message: "logoLink is required" });
+    }
     let saved = await collegeModel.create(data);
+    console.log(saved)
     res.status(201).send({ status: true, data: saved });
-  }
-  catch (err) {
-    res.status(500).send({status:false, msg:err.massege})
+  } catch (err) {
+    res.status(500).send({ status: false, msg: err.massege });
   }
 };
 
@@ -61,7 +72,7 @@ const CollegeDetails = async function (req, res) {
     if (!details) {
       return res
         .status(400)
-        .send({ status:false, message: "Details  is not present " });
+        .send({ status: false, message: "Details  is not present " });
     }
     const data2 = await InternModel.find({
       collegeId: details._id,
@@ -70,7 +81,7 @@ const CollegeDetails = async function (req, res) {
     if (!data2) {
       return res
         .status(400)
-        .send({ status:false, massege: "Data not present" });
+        .send({ status: false, massege: "Data not present" });
     }
     const getData = {
       name: details.name,
@@ -79,11 +90,11 @@ const CollegeDetails = async function (req, res) {
       interests: data2,
     };
 
-    return res.status(200).send({status: true, data: getData });
+    return res.status(200).send({ status: true, data: getData });
   } catch (err) {
     return res.status(500).send({ message: err.message });
   }
-}
+};
 
-module.exports.CollegeDetails = CollegeDetails
-module.exports.CreateCollege = CreateCollege
+module.exports.CollegeDetails = CollegeDetails;
+module.exports.CreateCollege = CreateCollege;

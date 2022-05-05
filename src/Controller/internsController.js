@@ -44,9 +44,7 @@ const CreateInterns = async function (req, res) {
         .send({ status: false, message: "Mobile No. is required" });
     }
     if (
-      !/^(?:(?:\+|0{0,2})91(\s*|[\-])?|[0]?)?([6789]\d{2}([ -]?)\d{3}([ -]?)\d{4})$/.test(
-        data.mobile
-      )
+      !/^(?:(?:\+|0{0,2})91(\s*|[\-])?|[0]?)?([6789]\d{2}([ -]?)\d{3}([ -]?)\d{4})$/.test(data.mobile)
     ) {
       return res
         .status(400)
