@@ -1,7 +1,6 @@
 const InternModel = require("../Model/InternModel");
 const collegeModel = require("../Model/collegeModel");
 
-
 ////POST /functionup/interns
 const CreateInterns = async function (req, res) {
   try {
@@ -30,11 +29,17 @@ const CreateInterns = async function (req, res) {
         .status(400)
         .send({ status: false, message: "mobile No. is required" });
     }
-    if(!/^(?:(?:\+|0{0,2})91(\s*|[\-])?|[0]?)?([6789]\d{2}([ -]?)\d{3}([ -]?)\d{4})$/.test(data.mobile)){
-        return res.status(400).send({status:false, message:"mobile no ir required"})
+    if (
+      !/^(?:(?:\+|0{0,2})91(\s*|[\-])?|[0]?)?([6789]\d{2}([ -]?)\d{3}([ -]?)\d{4})$/.test(
+        data.mobile
+      )
+    ) {
+      return res
+        .status(400)
+        .send({ status: false, message: "mobile no ir required" });
     }
     let college_id = data.collegeId;
-    console.log(college_id)
+    console.log(college_id);
     if (!college_id) {
       return res
         .status(400)
@@ -45,15 +50,15 @@ const CreateInterns = async function (req, res) {
         .status(400)
         .send({ status: false, message: "enter a valid collegeId" });
     }
-    let collegeDetail = await collegeModel.find({_id:data.collegeId});
+    let collegeDetail = await collegeModel.find({ _id: data.collegeId });
     //console.log(collegeDetail);
     if (!collegeDetail) {
       return res
         .status(404)
         .send({ status: false, message: "No such college exists" });
     }
-    let saved = await InternModel.create(data)
-    console.log(saved)
+    let saved = await InternModel.create(data);
+    console.log(saved);
     res.status(201).send({ status: true, data: saved });
   } catch (error) {
     res.status(500).send({ status: false, msg: error.massege });

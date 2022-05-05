@@ -31,10 +31,11 @@ const CreateCollege = async function (req, res) {
         .status(400)
         .send({ status: false, message: "plz giving the logoLink" });
     }
-    if (Object.keys(data.logoLink).length == 0 || data.logoLink.lengthb == 0){
-      return res.status(400).send({status:false, data: " Plz Enter valid logoLink"})
-    }
-
+    if (!/[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%.\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%\+.~#?&\/\/=]*)/.test(data.logoLink)
+    ) { return res
+      .status(400)
+      .send({ status: false, message: "logoLink is required" });
+  }
     let saved = await collegeModel.create(data);
     res.status(201).send({ status: true, data: saved });
   }

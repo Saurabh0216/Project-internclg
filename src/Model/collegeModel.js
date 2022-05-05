@@ -15,8 +15,13 @@ const collegeSchema = new mongoose.Schema(
         },
         logoLink:{
             type:String,
-            required:[true, 'logoLink is required']
-
+            required:[true, 'logoLink is required'],
+            validate: {
+                validator:function(v) {
+                  return /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%.\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%\+.~#?&\/\/=]*)/.test(v)
+                },
+                message:"Please enter a valid logoLink"
+              }
         },
         isDeleted:{
             type:Boolean,
