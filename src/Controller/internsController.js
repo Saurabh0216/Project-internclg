@@ -56,7 +56,10 @@ const CreateInterns = async function (req, res) {
         .status(400)
         .send({ status: false, data: "mobile already exist" });
     }
-    let college_id = data.collegeId;
+    let college_id = await collegeModel.find({_id:data.collegeId})
+    if(college_id.length != 0){
+      return res.status(400).send({status:false, massege:"collegeId already exist"})
+    }
     console.log(college_id);
     if (!college_id) {
       return res
