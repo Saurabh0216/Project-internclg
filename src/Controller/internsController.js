@@ -27,7 +27,7 @@ const CreateInterns = async function (req, res) {
     if (!data.mobile) {
       return res
         .status(400)
-        .send({ status: false, message: "mobile No. is required" });
+        .send({ status: false, message: "Mobile No. is required" });
     }
     if (
       !/^(?:(?:\+|0{0,2})91(\s*|[\-])?|[0]?)?([6789]\d{2}([ -]?)\d{3}([ -]?)\d{4})$/.test(
@@ -36,7 +36,7 @@ const CreateInterns = async function (req, res) {
     ) {
       return res
         .status(400)
-        .send({ status: false, message: "mobile no ir required" });
+        .send({ status: false, message: "Mobile No is required" });
     }
     let college_id = data.collegeId;
     console.log(college_id);
