@@ -8,6 +8,12 @@ const CreateCollege = async function (req, res) {
     if(!data){
       return res.status(400).send({status: false, message:" college creation not allow"})
     }
+    let checknameExist = await collegeModel.find({ name: data.name });
+    if (checknameExist.length != 0) {
+      return res
+        .status(400)
+        .send({ status: false, data: "name already exist" });
+    }
     if (!data.name) {
       return res
         .status(400)

@@ -15,6 +15,7 @@ const collegeSchema = new mongoose.Schema(
         },
         logoLink:{
             type:String,
+            trim: true,
             required:[true, 'logoLink is required'],
             validate: {
                 validator:function(v) {

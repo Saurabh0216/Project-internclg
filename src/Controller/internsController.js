@@ -6,6 +6,14 @@ const CreateInterns = async function (req, res) {
   try {
     let data = req.body;
     console.log(data);
+    if (!data) {
+      return res
+        .status(400)
+        .send({ status: false, massege: "plz enter a valid data" });
+    }
+    if(Object.keys(req.body).length == 0 || req.body.length == 0){
+      return res.status(400).send({status:false, massege:"plz enter a valid data"})
+    }
     if (!data.name) {
       return res
         .status(400)
@@ -24,6 +32,12 @@ const CreateInterns = async function (req, res) {
         .status(400)
         .send({ status: false, message: "plz enter a valid Email" });
     }
+    let checkemailExist = await InternModel.find({ email: data.email });
+    if (checkemailExist.length != 0) {
+      return res
+        .status(400)
+        .send({ status: false, data: "email already exist" });
+    }
     if (!data.mobile) {
       return res
         .status(400)
@@ -37,6 +51,12 @@ const CreateInterns = async function (req, res) {
       return res
         .status(400)
         .send({ status: false, message: "Mobile No is required" });
+    }
+    let checkmobileExist = await InternModel.find({ mobile: data.mobile });
+    if (checkmobileExist.length != 0) {
+      return res
+        .status(400)
+        .send({ status: false, data: "mobile already exist" });
     }
     let college_id = data.collegeId;
     console.log(college_id);
