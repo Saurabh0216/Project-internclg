@@ -16,7 +16,7 @@ const CreateCollege = async function (req, res) {
     if (checknameExist.length != 0) {
       return res
         .status(400)
-        .send({ status: false, data: "name already exist" });
+        .send({ status: false, message: "name already exist" });
     }
     if (!data.name) {
       return res.status(400).send({ status: false, message: "Enter a Name" });
@@ -32,12 +32,12 @@ const CreateCollege = async function (req, res) {
     if (!data.fullName) {
       return res
         .status(400)
-        .send({ status: false, message: "Enter a full collegeName" }); //fullName: []
+        .send({ status: false, message: "Enter a full collegeName" }); 
     }
     if (Object.keys(data.fullName).length == 0 || data.fullName.length == 0) {
       return res
         .status(400)
-        .send({ status: false, msg: "Enter a valid full collegeName" });
+        .send({ status: false, message: "Enter a valid full collegeName" });
     }
     if (!data.logoLink) {
       return res
@@ -53,11 +53,15 @@ const CreateCollege = async function (req, res) {
         .status(400)
         .send({ status: false, message: "logoLink is required" });
     }
-    let saved = await collegeModel.create(data);
+    let saved = await collegeModel.create({name:data.name, fullName:data.fullName, logoLink:data.logoLink});
+    let name = saved.name;
+    let fullName = saved.fullName;
+    let logoLink = saved.logoLink;
+    let isDeleted = saved.isDeleted;
     console.log(saved);
-    res.status(201).send({ status: true, data: saved });
+    res.status(201).send({ status: true, data:{name,fullName,logoLink,isDeleted}});
   } catch (err) {
-    res.status(500).send({ status: false, msg: err.massege });
+    res.status(500).send({ status: false, message: err.massege });
   }
 };
 
