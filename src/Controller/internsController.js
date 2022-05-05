@@ -77,9 +77,9 @@ const CreateInterns = async function (req, res) {
     let name = saved.name;
     let email = saved.email;
     let mobile = saved.mobile;
-    let collegeId = saved.collegeId;
+    let CollegeName = saved.collegeId;
     let isDeleted = saved.isDeleted;
-    res.status(201).send({ status: true, data:{isDeleted,name,email,mobile, collegeId} });
+    res.status(201).send({ status: true, data:{isDeleted,name,email,mobile, CollegeName} });
   } catch (error) {
     res.status(500).send({ status: false, msg: error.massege });
   }
