@@ -11,7 +11,7 @@ const CreateInterns = async function (req, res) {
         .status(400)
         .send({ status: false, massege: "plz enter a valid data" });
     }
-    if(Object.keys(req.body).length == 0 || req.body.length == 0){
+    if(Object.keys(data).length == 0 || data.length == 0){
       return res.status(400).send({status:false, massege:"plz enter a valid data"})
     }
     if (!data.name) {
@@ -21,23 +21,23 @@ const CreateInterns = async function (req, res) {
     }
     if (Object.keys(data.name).length == 0 || data.name.length == 0) {
       return res.status(400).send({ status: false, msg: "plz enter Name" });
-    }
-    if (!data.email) {
+     }
+     if (!data.email) {
+       return res
+         .status(400)
+         .send({ status: false, message: "EmailId is required" });
+     }
+     if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(data.email)) {
+       return res
+         .status(400)
+         .send({ status: false, message: "plz enter a valid Email" });
+     }
+     let checkemailExist = await InternModel.find({ email: data.email });
+     if (checkemailExist.length != 0) {
       return res
-        .status(400)
-        .send({ status: false, message: "EmailId is required" });
-    }
-    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(data.email)) {
-      return res
-        .status(400)
-        .send({ status: false, message: "plz enter a valid Email" });
-    }
-    let checkemailExist = await InternModel.find({ email: data.email });
-    if (checkemailExist.length != 0) {
-      return res
-        .status(400)
-        .send({ status: false, data: "email already exist" });
-    }
+         .status(400)
+         .send({ status: false, data: "email already exist" });
+     }
     if (!data.mobile) {
       return res
         .status(400)
@@ -56,21 +56,24 @@ const CreateInterns = async function (req, res) {
         .status(400)
         .send({ status: false, data: "mobile already exist" });
     }
-    if (!data.collegeId) {
+    if (!data.collegeName) {
       return res
         .status(400)
         .send({ status: false, message: "collegeId is required" });
     }
-    let college_id = await collegeModel.find({_id:data.collegeId})
-    if(college_id.length == 0){
+    let collegeName = await collegeModel.find({name:req.body.collegeName}).select({_id:true})
+    console.log(collegeName)
+    if(collegeName.length == 0){
       return res.status(400).send({status:false, massege:"No any such college"})
     }
-    if (Object.keys(college_id).length == 0 || college_id.length == 0) {
+    if (Object.keys(collegeName).length == 0 || collegeName.length == 0) {
       return res
         .status(400)
-        .send({ status: false, message: "enter a valid collegeId" });
+        .send({ status: false, message: "enter a valid collegeName" });
     }
-    let saved = await InternModel.create(data);
+
+    
+    let saved = await InternModel.create({name:data.name, email:data.email, mobile:data.mobile, collegeId:collegeName[0]});
     res.status(201).send({ status: true, data: saved });
   } catch (error) {
     res.status(500).send({ status: false, msg: error.massege });

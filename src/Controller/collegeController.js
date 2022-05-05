@@ -5,14 +5,14 @@ const InternModel = require("../Model/InternModel");
 const CreateCollege = async function (req, res) {
   try {
     let data = req.body;
-    console.log(data)
+    console.log(data);
     if (!data) {
       return res
         .status(400)
         .send({ status: false, message: " college creation not allow" });
     }
-    let checknameExist = await collegeModel.find({name:data.name})
-    console.log(checknameExist)
+    let checknameExist = await collegeModel.find({ name: data.name });
+    console.log(checknameExist);
     if (checknameExist.length != 0) {
       return res
         .status(400)
@@ -27,7 +27,7 @@ const CreateCollege = async function (req, res) {
         .send({ status: false, message: "Enter a valid Name" });
     }
     if (!/^([a-zA-Z]+)$/.test(data.name)) {
-      return res.status(400).send ({ status: false, massege: "plz enter name" })
+      return res.status(400).send({ status: false, massege: "plz enter name" });
     }
     if (!data.fullName) {
       return res
@@ -44,14 +44,17 @@ const CreateCollege = async function (req, res) {
         .status(400)
         .send({ status: false, message: "plz giving the logoLink" });
     }
-    if (!/(http|ftp|https|www):\/\/.+\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(data.logoLink) )
-   {
+    if (
+      !/(http|ftp|https|www):\/\/.+\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(
+        data.logoLink
+      )
+    ) {
       return res
         .status(400)
         .send({ status: false, message: "logoLink is required" });
     }
     let saved = await collegeModel.create(data);
-    console.log(saved)
+    console.log(saved);
     res.status(201).send({ status: true, data: saved });
   } catch (err) {
     res.status(500).send({ status: false, msg: err.massege });
