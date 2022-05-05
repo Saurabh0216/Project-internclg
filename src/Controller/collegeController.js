@@ -26,7 +26,7 @@ const CreateCollege = async function (req, res) {
         .status(400)
         .send({ status: false, message: "Enter a valid Name" });
     }
-    if (!/^([a-zA-Z])/.test(data.name)) {
+    if (!/^([a-zA-Z]+)$/.test(data.name)) {
       return res.status(400).send ({ status: false, massege: "plz enter name" })
     }
     if (!data.fullName) {
@@ -44,7 +44,7 @@ const CreateCollege = async function (req, res) {
         .status(400)
         .send({ status: false, message: "plz giving the logoLink" });
     }
-    if (!/(http|ftp|https):\/\/.+\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(data.logoLink) )
+    if (!/(http|ftp|https|www):\/\/.+\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(data.logoLink) )
    {
       return res
         .status(400)

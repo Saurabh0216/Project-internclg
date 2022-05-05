@@ -56,30 +56,21 @@ const CreateInterns = async function (req, res) {
         .status(400)
         .send({ status: false, data: "mobile already exist" });
     }
-    let college_id = await collegeModel.find({_id:data.collegeId})
-    if(college_id.length != 0){
-      return res.status(400).send({status:false, massege:"collegeId already exist"})
-    }
-    console.log(college_id);
-    if (!college_id) {
+    if (!data.collegeId) {
       return res
         .status(400)
         .send({ status: false, message: "collegeId is required" });
+    }
+    let college_id = await collegeModel.find({_id:data.collegeId})
+    if(college_id.length == 0){
+      return res.status(400).send({status:false, massege:"No any such college"})
     }
     if (Object.keys(college_id).length == 0 || college_id.length == 0) {
       return res
         .status(400)
         .send({ status: false, message: "enter a valid collegeId" });
     }
-    let collegeDetail = await collegeModel.find({ _id: data.collegeId });
-    //console.log(collegeDetail);
-    if (!collegeDetail) {
-      return res
-        .status(404)
-        .send({ status: false, message: "No such college exists" });
-    }
     let saved = await InternModel.create(data);
-    console.log(saved);
     res.status(201).send({ status: true, data: saved });
   } catch (error) {
     res.status(500).send({ status: false, msg: error.massege });
