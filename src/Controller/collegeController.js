@@ -9,15 +9,12 @@ const CreateCollege = async function (req, res) {
     if (!data) {
       return res
         .status(400)
-        .send({ status: false, message: " college creation not allow" });
+        .send({ status: false, message: " college creation not allow" });//
     }
-    let checknameExist = await collegeModel.find({ name: data.name });
-    console.log(checknameExist);
-    if (checknameExist.length != 0) {
-      return res
-        .status(400)
-        .send({ status: false, message: "name already exist" });
+    if(Object.keys(data).length == 0 || data.length == 0){
+      return res.status(400).send({status:false, massege:"plz enter a valid data"})
     }
+    
     if (!data.name) {
       return res.status(400).send({ status: false, message: "Enter a Name" });
     }
@@ -28,6 +25,13 @@ const CreateCollege = async function (req, res) {
     }
     if (!/^([a-zA-Z]+)$/.test(data.name)) {
       return res.status(400).send({ status: false, massege: "plz enter name" });
+    }
+    let checknameExist = await collegeModel.find({ name: data.name });
+    console.log(checknameExist);
+    if (checknameExist.length != 0) {
+      return res
+        .status(400)
+        .send({ status: false, message: "name already exist" });
     }
     if (!data.fullName) {
       return res
@@ -94,7 +98,7 @@ const CollegeDetails = async function (req, res) {
       interests: data2,
     };
 
-     res.status(200).send({ status: true, data: getData });
+    res.status(200).send({ status: true, data: getData });
   } catch (err) {
     return res.status(500).send({ message: err.message });
   }
