@@ -43,6 +43,9 @@ const CreateCollege = async function (req, res) {
         .status(400)
         .send({ status: false, message: "Enter a valid full collegeName" });
     }
+    if (!/^([a-zA-Z]+)$/.test(data.fullName)) {
+      return res.status(400).send({ status: false, massege: "plz enter FullName" });
+    }
     if (!data.logoLink) {
       return res
         .status(400)
